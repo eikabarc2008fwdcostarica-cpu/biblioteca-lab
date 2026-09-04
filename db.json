@@ -114,6 +114,15 @@
       "userName": "Juan Estudiante",
       "status": "Confirmada",
       "createdAt": "2026-09-04T19:59:41.608Z"
+    },
+    {
+      "id": "8456",
+      "courseId": "1",
+      "courseTitle": "Arquitectura de Computadores",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T20:29:46.265Z"
     }
   ],
   "tasks": [

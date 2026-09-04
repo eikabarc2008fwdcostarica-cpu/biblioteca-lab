@@ -21,7 +21,7 @@ const GeminiChatbot = () => {
 
   const messagesEndRef = useRef(null);
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  const geminiModel = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash';
+  const geminiModel = import.meta.env.VITE_GEMINI_MODEL || 'gemini-3.6-flash';
 
   // Auto-scroll al final del chat cuando se agregue un mensaje
   useEffect(() => {
