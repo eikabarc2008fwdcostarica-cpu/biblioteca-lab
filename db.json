@@ -1,29 +1,40 @@
 {
   "users": [
-    { "id": 1, "name": "Ana Admin", "email": "admin@demo.com", "password": "1234", "role": "admin" },
-    { "id": 2, "name": "Luis User", "email": "user@demo.com", "password": "1234", "role": "user" },
-    { "id": 3, "name": "Carlos Pérez", "email": "carlos@demo.com", "password": "1234", "role": "user" }
-  ],
-  "tasks": [
-    { "id": 1, "title": "Revisar inventario de libros", "assignedTo": 1, "completed": false },
-    { "id": 2, "title": "Organizar estantería B", "assignedTo": 2, "completed": true },
-    { "id": 3, "title": "Crear guía de reservas", "assignedTo": 2, "completed": false },
-    { "id": 4, "title": "Actualizar catálogo de cursos", "assignedTo": 3, "completed": false },
-    { "id": 5, "title": "Revisión de material agotado", "assignedTo": 1, "completed": true },
-    { "id": 6, "title": "Preparar salón de lectura", "assignedTo": 3, "completed": false }
+    {
+      "id": "1",
+      "name": "Profesor Admin",
+      "email": "admin@lab.com",
+      "password": "123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "name": "Juan Estudiante",
+      "email": "estudiante@lab.com",
+      "password": "123",
+      "role": "estudiante"
+    }
   ],
   "courses": [
-    { "id": 1, "title": "Matemáticas Básicas", "category": "Matemáticas", "stock": 5, "description": "Álgebra, geometría y estadística introductoria." },
-    { "id": 2, "title": "Física Cuántica", "category": "Física", "stock": 0, "description": "Introducción a los principios de la mecánica cuántica." },
-    { "id": 3, "title": "Química Orgánica", "category": "Química", "stock": 3, "description": "Reacciones y mecanismos de los compuestos orgánicos." },
-    { "id": 4, "title": "Historia del Arte", "category": "Arte", "stock": 0, "description": "Recorrido por las corrientes artísticas principales." },
-    { "id": 5, "title": "Programación Python", "category": "Tecnología", "stock": 8, "description": "Fundamentos de programación con Python." }
+    {
+      "id": "1",
+      "title": "Arquitectura de Computadores",
+      "category": "Hardware",
+      "materialsAvailable": 5
+    },
+    {
+      "id": "2",
+      "title": "Sistemas Embebidos con Arduino",
+      "category": "Electrónica",
+      "materialsAvailable": 0
+    },
+    {
+      "id": "3",
+      "title": "Redes y Comunicaciones",
+      "category": "Telecomunicaciones",
+      "materialsAvailable": 3
+    }
   ],
-  "reservations": [
-    { "id": 1, "courseId": 1, "userId": 2, "date": "2025-01-15", "status": "active" },
-    { "id": 2, "courseId": 2, "userId": 3, "date": "2025-02-01", "status": "completed" },
-    { "id": 3, "courseId": 3, "userId": 2, "date": "2025-02-10", "status": "active" },
-    { "id": 4, "courseId": 5, "userId": 1, "date": "2025-03-05", "status": "pending" },
-    { "id": 5, "courseId": 4, "userId": 3, "date": "2025-03-12", "status": "active" }
-  ]
+  "reservations": [],
+  "tasks": []
 }
