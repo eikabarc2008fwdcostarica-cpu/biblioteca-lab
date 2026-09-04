@@ -27,23 +27,21 @@ const AccesoDenegado = () => {
       justifyContent: 'center',
       padding: '2rem',
       textAlign: 'center',
-      background: 'linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%)',
+      background: 'transparent',
     },
     card: {
-      background: '#ffffff',
+      background: 'var(--bg-card)',
       borderRadius: '20px',
       padding: '3rem 2.5rem',
       maxWidth: '480px',
       width: '100%',
-      boxShadow: '0 8px 32px rgba(239, 68, 68, 0.12), 0 2px 8px rgba(0,0,0,0.06)',
-      border: '1px solid #fee2e2',
+      boxShadow: 'var(--shadow-lg)',
+      border: '1px solid var(--border-color)',
     },
     iconWrapper: {
       fontSize: '5rem',
       lineHeight: 1,
       marginBottom: '1rem',
-      // Animación de pulso suave aplicada con keyframes inline no es posible,
-      // pero el ícono sigue siendo llamativo visualmente con su tamaño
       animation: 'none',
     },
     errorCode: {
@@ -66,13 +64,13 @@ const AccesoDenegado = () => {
     title: {
       fontSize: '1.5rem',
       fontWeight: '700',
-      color: '#1e293b',
+      color: 'var(--text-primary)',
       margin: '0 0 0.75rem',
       fontFamily: 'system-ui, -apple-system, sans-serif',
     },
     description: {
       fontSize: '1rem',
-      color: '#64748b',
+      color: 'var(--text-secondary)',
       lineHeight: '1.6',
       margin: '0 0 2rem',
     },

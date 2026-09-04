@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import RutaProtegida from './components/RutaProtegida';
@@ -82,13 +83,15 @@ function AppContent() {
 }
 
 /**
- * App principal envuelta en AuthProvider
+ * App principal envuelta en ThemeProvider y AuthProvider
  */
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

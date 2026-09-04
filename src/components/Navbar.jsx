@@ -1,16 +1,31 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, LogOut, LogIn, Menu, X, Shield, User, UserPlus, AlertTriangle } from 'lucide-react';
+import {
+  BookOpen,
+  LogOut,
+  LogIn,
+  Menu,
+  X,
+  Shield,
+  User,
+  UserPlus,
+  AlertTriangle,
+  Sun,
+  Moon,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import './Navbar.css';
 
 /**
  * Componente funcional Navbar
  * Barra de navegación profesional con iconos modernos de Lucide,
- * renderizado condicional por rol y diálogo de confirmación previa para cerrar sesión.
+ * renderizado condicional por rol, selector de modo oscuro/claro
+ * y diálogo de confirmación previa para cerrar sesión.
  */
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -84,8 +99,23 @@ const Navbar = () => {
               </li>
             </ul>
 
-            {/* Sección de autenticación con renderizado condicional según 'user' */}
+            {/* Sección de autenticación y controles de tema */}
             <div className="navbar-auth">
+              {/* Botón de alternancia Modo Oscuro / Claro */}
+              <button
+                type="button"
+                className="theme-toggle-btn"
+                onClick={toggleTheme}
+                aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+                title={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
+              >
+                {isDark ? (
+                  <Sun size={18} className="theme-icon sun" />
+                ) : (
+                  <Moon size={18} className="theme-icon moon" />
+                )}
+              </button>
+
               {user ? (
                 // 1. Vista cuando el usuario SÍ ha iniciado sesión
                 <div className="user-profile">

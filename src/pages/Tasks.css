@@ -254,3 +254,60 @@
     justify-content: center;
   }
 }
+
+/* ── Modo Oscuro para Tareas ────────────────────────────────────────────── */
+[data-theme="dark"] .tasks-header h1 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .tasks-header p {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .admin-task-card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  border-left-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .admin-task-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .task-form-field label {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .task-form-field input {
+  background-color: var(--bg-input);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .task-form-field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .tasks-filter-tabs {
+  background-color: var(--bg-card-subtle);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .filter-tab-btn {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .filter-tab-btn.active {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .tasks-empty-state {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+

@@ -13,6 +13,13 @@
       "email": "estudiante@lab.com",
       "password": "123",
       "role": "estudiante"
+    },
+    {
+      "id": "b752",
+      "name": "Eiker Abarca Murillo",
+      "email": "eik@gmail.com",
+      "password": "1234",
+      "role": "user"
     }
   ],
   "courses": [
