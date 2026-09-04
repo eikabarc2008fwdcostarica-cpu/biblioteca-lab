@@ -56,7 +56,7 @@ Si el usuario pregunta sobre cualquier tema ajeno (política, entretenimiento, m
         { role: 'user', text: userPrompt },
         {
           role: 'error',
-          text: 'Para activar el asistente, define tu clave en el archivo .env.local como VITE_GEMINI_API_KEY=tu_clave_aqui',
+          text: 'Para activar el asistente, define tu clave en el archivo .env como VITE_GEMINI_API_KEY=tu_clave_aqui',
         },
       ]);
       setInputValue('');
@@ -163,7 +163,7 @@ Si el usuario pregunta sobre cualquier tema ajeno (política, entretenimiento, m
             <div className="gemini-apikey-banner">
               <KeyRound size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <span>Para activar el asistente, define tu clave en el archivo <code>.env.local</code> como:</span>
+                <span>Para activar el asistente, define tu clave en el archivo <code>.env</code> como:</span>
                 <br />
                 <code>VITE_GEMINI_API_KEY=tu_clave_aqui</code>
               </div>
