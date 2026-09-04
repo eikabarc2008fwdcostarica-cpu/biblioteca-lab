@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { ShieldAlert, Home } from 'lucide-react';
 
 /**
  * Página AccesoDenegado (Error 403)
@@ -7,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
  * para la que no tiene el rol requerido (ej. un estudiante intenta entrar al /admin-panel).
  *
  * Diseño:
- *   - Icono de advertencia grande (🚫) con animación de pulso
+ *   - Icono de advertencia con ShieldAlert
  *   - Código de error 403 prominente
  *   - Mensaje explicativo claro y sin tecnicismos
  *   - Botón para volver al inicio (/)
@@ -115,7 +116,7 @@ const AccesoDenegado = () => {
       <div style={styles.card}>
         {/* Ícono visual de advertencia */}
         <div style={styles.iconWrapper} aria-hidden="true">
-          🚫
+          <ShieldAlert size={72} color="#ef4444" />
         </div>
 
         {/* Código de error */}
@@ -151,7 +152,10 @@ const AccesoDenegado = () => {
           }}
           aria-label="Volver al inicio de la aplicación"
         >
-          🏠 Volver al Inicio
+          <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <Home size={18} />
+            <span>Volver al Inicio</span>
+          </span>
         </button>
 
         {/* Nota informativa */}

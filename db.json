@@ -53,6 +53,60 @@
       "userName": "Juan Estudiante",
       "status": "Confirmada",
       "createdAt": "2026-09-04T09:15:00.000Z"
+    },
+    {
+      "id": "5981",
+      "courseId": "1",
+      "courseTitle": "Arquitectura de Computadores",
+      "userId": "1",
+      "userName": "Profesor Admin",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:44:10.024Z"
+    },
+    {
+      "id": "2980",
+      "courseId": "2",
+      "courseTitle": "Sistemas Embebidos con Arduino",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:56:40.438Z"
+    },
+    {
+      "id": "7837",
+      "courseId": "2",
+      "courseTitle": "Sistemas Embebidos con Arduino",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:56:42.870Z"
+    },
+    {
+      "id": "06a9",
+      "courseId": "2",
+      "courseTitle": "Sistemas Embebidos con Arduino",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:56:43.669Z"
+    },
+    {
+      "id": "be90",
+      "courseId": "3",
+      "courseTitle": "Redes y Comunicaciones",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:56:50.537Z"
+    },
+    {
+      "id": "4833",
+      "courseId": "2",
+      "courseTitle": "Sistemas Embebidos con Arduino",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T19:59:41.608Z"
     }
   ],
   "tasks": [
@@ -60,7 +114,7 @@
       "id": "1",
       "title": "Calibración de osciloscopios de mesa 3 y 4",
       "assignedTo": "Juan Estudiante",
-      "completed": false
+      "completed": true
     },
     {
       "id": "2",
@@ -78,7 +132,14 @@
       "id": "4",
       "title": "Reemplazo de cables de red categoría 6 dañados",
       "assignedTo": "Profesor Admin",
-      "completed": false
+      "completed": true
+    },
+    {
+      "id": "1899",
+      "title": "limpieza de milimetros",
+      "assignedTo": "Jermmy",
+      "completed": true
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

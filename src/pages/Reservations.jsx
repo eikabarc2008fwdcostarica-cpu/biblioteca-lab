@@ -1,5 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import {
+  Calendar,
+  PlusCircle,
+  Check,
+  CheckCircle2,
+  AlertCircle,
+  ClipboardList,
+  Loader2,
+  Inbox,
+  Trash2,
+  X,
+} from 'lucide-react';
 
 /**
  * Página Reservations — Módulo interactivo de reservas de laboratorio
@@ -329,7 +341,7 @@ const Reservations = () => {
        * al estado local con el spread operator.
        */
       setReservations((prev) => [...prev, creada]);
-      setFormSuccess(`✅ Reserva para "${selectedCourse.title}" creada correctamente.`);
+      setFormSuccess(`Reserva para "${selectedCourse.title}" creada correctamente.`);
     } catch (err) {
       setFormError(err.message || 'Error al crear la reserva.');
     } finally {
@@ -370,8 +382,8 @@ const Reservations = () => {
     <div style={S.page}>
       {/* Encabezado */}
       <header style={S.header}>
-        <h1 style={S.h1}>
-          📅 Reservas de Laboratorio
+        <h1 style={{ ...S.h1, display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <Calendar size={28} color="#2563eb" /> Reservas de Laboratorio
         </h1>
         <p style={S.subtitle}>
           {isAdmin
@@ -382,13 +394,23 @@ const Reservations = () => {
 
       {/* ── Formulario: crear nueva reserva ─────────────────────────────── */}
       <section style={S.formCard}>
-        <h2 style={S.formTitle}>
-          ➕ Nueva Reserva
+        <h2 style={{ ...S.formTitle, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <PlusCircle size={20} color="#2563eb" /> Nueva Reserva
         </h2>
 
         {/* Mensajes del formulario */}
-        {formError && <div style={S.alertError} role="alert">{formError}</div>}
-        {formSuccess && <div style={S.alertInfo} role="status">{formSuccess}</div>}
+        {formError && (
+          <div style={{ ...S.alertError, display: 'flex', alignItems: 'center', gap: '0.5rem' }} role="alert">
+            <AlertCircle size={18} color="#ef4444" />
+            <span>{formError}</span>
+          </div>
+        )}
+        {formSuccess && (
+          <div style={{ ...S.alertInfo, display: 'flex', alignItems: 'center', gap: '0.5rem' }} role="status">
+            <CheckCircle2 size={18} color="#10b981" />
+            <span>{formSuccess}</span>
+          </div>
+        )}
 
         <form onSubmit={handleCreateReservation}>
           <div style={S.formRow}>
@@ -421,11 +443,27 @@ const Reservations = () => {
             {/* Botón de envío */}
             <button
               type="submit"
-              style={S.btnSubmit}
+              style={{
+                ...S.btnSubmit,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem',
+              }}
               disabled={isSubmitting || courses.length === 0}
               aria-busy={isSubmitting}
             >
-              {isSubmitting ? 'Reservando...' : '✔ Confirmar Reserva'}
+              {isSubmitting ? (
+                <>
+                  <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                  <span>Reservando...</span>
+                </>
+              ) : (
+                <>
+                  <Check size={16} />
+                  <span>Confirmar Reserva</span>
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -433,22 +471,32 @@ const Reservations = () => {
 
       {/* ── Lista de reservas ────────────────────────────────────────────── */}
       <section>
-        <h2 style={S.sectionTitle}>
-          📋 {isAdmin ? 'Todas las Reservas' : 'Mis Reservas'}
+        <h2 style={{ ...S.sectionTitle, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <ClipboardList size={20} color="#2563eb" /> {isAdmin ? 'Todas las Reservas' : 'Mis Reservas'}
         </h2>
 
         {/* Error al cargar */}
-        {fetchError && <div style={S.alertError} role="alert">{fetchError}</div>}
+        {fetchError && (
+          <div style={{ ...S.alertError, display: 'flex', alignItems: 'center', gap: '0.5rem' }} role="alert">
+            <AlertCircle size={18} color="#ef4444" />
+            <span>{fetchError}</span>
+          </div>
+        )}
 
         {/* Spinner de carga */}
         {loadingReservations ? (
           <div style={S.spinner} aria-live="polite">
-            <p>⏳ Cargando reservas...</p>
+            <p style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#64748b' }}>
+              <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
+              <span>Cargando reservas...</span>
+            </p>
           </div>
         ) : reservations.length === 0 ? (
           /* Estado vacío */
           <div style={S.emptyState}>
-            <p style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>📭</p>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem', color: '#94a3b8' }}>
+              <Inbox size={42} strokeWidth={1.5} />
+            </div>
             <p style={{ margin: 0 }}>
               {isAdmin
                 ? 'No hay reservas registradas en el sistema.'
@@ -507,6 +555,9 @@ const Reservations = () => {
                     <button
                       style={{
                         ...S.btnDelete,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
                         opacity: deletingId === reserva.id ? 0.6 : 1,
                       }}
                       onClick={() =>
@@ -515,7 +566,19 @@ const Reservations = () => {
                       disabled={deletingId === reserva.id}
                       aria-label={`Cancelar reserva de ${reserva.courseTitle}`}
                     >
-                      {deletingId === reserva.id ? '...' : isAdmin ? '🗑 Eliminar' : '✖ Cancelar'}
+                      {deletingId === reserva.id ? (
+                        '...'
+                      ) : isAdmin ? (
+                        <>
+                          <Trash2 size={13} />
+                          <span>Eliminar</span>
+                        </>
+                      ) : (
+                        <>
+                          <X size={13} />
+                          <span>Cancelar</span>
+                        </>
+                      )}
                     </button>
                   </td>
                 </tr>

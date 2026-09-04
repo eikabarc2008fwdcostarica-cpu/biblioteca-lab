@@ -21,6 +21,7 @@ const GeminiChatbot = () => {
 
   const messagesEndRef = useRef(null);
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const geminiModel = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash';
 
   // Auto-scroll al final del chat cuando se agregue un mensaje
   useEffect(() => {
@@ -77,7 +78,7 @@ Si el usuario pregunta sobre cualquier tema ajeno (política, entretenimiento, m
           parts: [{ text: m.text }],
         }));
 
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -143,7 +144,7 @@ Si el usuario pregunta sobre cualquier tema ajeno (política, entretenimiento, m
                 <h4>Asistente Biblioteca</h4>
                 <span className="gemini-status">
                   <span className="status-indicator-dot"></span>
-                  <span>En línea • Gemini 2.5</span>
+                  <span>En línea • {geminiModel}</span>
                 </span>
               </div>
             </div>
