@@ -55,14 +55,14 @@ biblioteca-lab/
 │   ├── components/
 │   │   ├── Login.jsx          # Formulario de inicio de sesión
 │   │   ├── Navbar.jsx         # Barra de navegación con menú por rol
-│   │   └── RutaProtegida.jsx  # Guardia de rutas (auth + roles) ← NUEVO
+│   │   └── RutaProtegida.jsx  # Guardia de rutas (auth + roles)
 │   ├── pages/
 │   │   ├── Dashboard.jsx      # Página de inicio / bienvenida
 │   │   ├── CoursesInventory.jsx # Catálogo de cursos (CRUD admin)
-│   │   ├── Reservations.jsx   # Módulo de reservas ← NUEVO (reemplazado)
+│   │   ├── Reservations.jsx   # Módulo interactivo de reservas
 │   │   ├── Tasks.jsx          # Página de tareas
-│   │   └── AccesoDenegado.jsx # Pantalla de error 403 ← NUEVO
-│   ├── App.jsx                # Configuración de rutas ← MODIFICADO
+│   │   └── AccesoDenegado.jsx # Pantalla de error 403
+│   ├── App.jsx                # Configuración de rutas con RutaProtegida
 │   └── main.jsx               # Punto de entrada
 ```
 
@@ -104,9 +104,9 @@ Componente guardia de ruta que trabaja con **react-router-dom v6**.
 ### Flujo de decisión
 
 ```
-user === null            →  <Navigate to="/login" replace />
+user === null               →  <Navigate to="/login" replace />
 rolPermitido !== user.role  →  <AccesoDenegado />
-✅ OK                    →  children || <Outlet />
+✅ OK                       →  children || <Outlet />
 ```
 
 ### Props
@@ -147,6 +147,19 @@ El prop `replace` evita que la URL protegida quede en el historial del navegador
 - **Sin `replace`:** historial = `['/courses', '/login']` → el botón "Atrás" regresa a `/courses` generando un bucle.
 - **Con `replace`:** historial = `['/login']` → el botón "Atrás" va a la página anterior real.
 
+### ¿Qué pasa al recargar la página?
+
+El `AuthContext` usa un *lazy initializer* **síncrono** en `useState`:
+
+```js
+const [user, setUser] = useState(() => {
+  const stored = localStorage.getItem('user');
+  return stored ? JSON.parse(stored) : null;
+});
+```
+
+Gracias a esto, en el **primer render** ya tiene el valor correcto. No existe una ventana de tiempo donde `user === null` mientras "se lee" el storage, por lo que no es necesario un estado `isLoading` adicional. Si en el futuro el contexto se volviera asíncrono (ej. verificación con backend real), habría que agregar `if (isAuthLoading) return <Spinner />`.
+
 ---
 
 ## ❌ AccesoDenegado (`src/pages/AccesoDenegado.jsx`)
@@ -175,10 +188,10 @@ Módulo interactivo completo de reservas de laboratorio.
 ### Operaciones HTTP
 
 ```
-GET  /reservations              → Admin: todas las reservas
-GET  /reservations?userId=X     → Usuario: solo sus reservas (filtrado en servidor)
-POST /reservations              → Crear nueva reserva
-DELETE /reservations/:id        → Cancelar/Eliminar una reserva
+GET    /reservations              → Admin: todas las reservas
+GET    /reservations?userId=X     → Usuario: solo sus reservas (filtrado en servidor)
+POST   /reservations              → Crear nueva reserva
+DELETE /reservations/:id          → Cancelar/Eliminar una reserva
 ```
 
 ### ¿Filtrado en servidor vs `.filter()` en frontend?
@@ -187,6 +200,8 @@ Se usa la query string `?userId=${user.id}` para que **JSON Server filtre en el 
 1. Menos datos en la red (más eficiente y escalable).
 2. El servidor es la fuente de verdad.
 3. En una API real, el filtro ocurre a nivel de base de datos (con índice).
+
+El `.filter()` en frontend solo tiene sentido cuando ya tienes los datos en memoria y quieres hacer una búsqueda o filtrado visual sin peticiones extra al servidor.
 
 ### Actualización de estado local optimista
 
@@ -234,16 +249,28 @@ JSON Server expone los siguientes endpoints en `http://localhost:3001`:
 
 ---
 
-## 🌿 Rama de trabajo
+## 🌿 Flujo de trabajo con Git
 
-Este desarrollo se realizó en la rama:
-```
-feature-oscar
-```
+Este desarrollo se realizó en la rama `feature-oscar`.
 
-Para subir los cambios:
 ```bash
+# Ver en qué rama estás
+git branch
+
+# Asegurarte de estar en feature-oscar
+git checkout feature-oscar
+
+# Commitear cambios
 git add .
-git commit -m "feat: RutaProtegida, AccesoDenegado, Reservations module, App.jsx routes"
+git commit -m "feat: descripción del cambio"
+
+# Subir a GitHub
 git push origin feature-oscar
 ```
+
+### Historial de commits relevantes
+
+| Hash | Descripción |
+|---|---|
+| `cc95537` | feat: implementacion inicial del sistema de biblioteca y laboratorio |
+| `285fda0` | feat: agregar rutas protegidas y módulo de reservas |
