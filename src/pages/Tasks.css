@@ -1,0 +1,67 @@
+.tasks-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tasks-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.tasks-page__header h1 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.tasks-page__subtitle {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.tasks-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .tasks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .tasks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.create-form {
+  padding: 22px;
+}
+
+.create-form h2 {
+  font-size: 18px;
+  margin: 0 0 4px;
+}
+
+.create-form__grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.create-form__actions {
+  display: flex;
+  align-items: flex-end;
+}
+
+@media (max-width: 640px) {
+  .create-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
