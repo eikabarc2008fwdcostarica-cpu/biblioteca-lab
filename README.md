@@ -1,276 +1,176 @@
-# 📚 Biblioteca Lab — Sistema de Gestión de Laboratorio
+# Biblioteca Lab
 
-Aplicación web construida con **React + Vite** que permite gestionar cursos, reservas y tareas de un laboratorio académico. Incluye autenticación por roles, rutas protegidas y un backend simulado con JSON Server.
-
----
-
-## 🚀 Tecnologías utilizadas
-
-| Tecnología | Versión | Propósito |
-|---|---|---|
-| React | 19.x | Biblioteca de UI |
-| Vite | 8.x | Bundler y servidor de desarrollo |
-| react-router-dom | v6 | Enrutamiento SPA |
-| JSON Server | — | Backend REST simulado |
-| lucide-react | — | Iconografía profesional |
+**Panel de Biblioteca de Cursos, Reservas e Inventario de Tareas** — aplicación
+frontend en **React 19 + Vite** con autenticación simulada y roles
+(`admin`/`user`) contra **JSON Server**.
 
 ---
 
-## ⚙️ Instalación y arranque
+## Integrantes del equipo
+
+| Nombre | Rol asumido | Responsabilidad |
+| --- | --- | --- |
+| Ana Admin | Líder técnica / Full-stack | Arquitectura, rutas protegidas, contexto de autenticación y Dashboard. |
+| Luis User | Frontend | Módulo de Tareas (`TaskCard`, `Tasks`) y consumo de endpoints. |
+| Carlos Pérez | DevOps / Documentación | JSON Server, `db.json`, scripts de levantamiento y bitácora. |
+
+> Los roles `admin` y `user` también son los roles de **autenticación** dentro de
+> la aplicación (ver tabla de credenciales).
+
+---
+
+## Tecnologías
+
+- **React 19** con **Vite** como bundler/dev server.
+- **React Router DOM v7** para el enrutado y rutas protegidas.
+- **JSON Server** como backend mock REST en `http://localhost:3001`.
+- **Oxlint** como linter.
+- **Vibe Coding** como metodología de trabajo colaborativo.
+
+---
+
+## Instalación y puesta en marcha
 
 ### 1. Clonar el repositorio
+
 ```bash
-git clone https://github.com/eikabarc2008fwdcostarica-cpu/biblioteca-lab.git
+git clone https://github.com/tu-org/biblioteca-lab.git
 cd biblioteca-lab
 ```
 
 ### 2. Instalar dependencias
+
 ```bash
 npm install
 ```
 
-### 3. Levantar el backend simulado (JSON Server)
-> Abre una terminal separada para este comando.
-```bash
-npx json-server db.json --port 3001
-```
-JSON Server estará disponible en: `http://localhost:3001`
+### 3. Levantar JSON Server (terminal 1)
 
-### 4. Levantar el servidor de desarrollo
+```bash
+json-server --watch db.json --port 3001
+```
+
+Esto expondrá los siguientes endpoints REST en `http://localhost:3001`:
+
+| Endpoint | Método | Descripción |
+| --- | --- | --- |
+| `/users` | GET | Lista de usuarios (incluye roles y passwords). |
+| `/courses` | GET / POST | Catálogo de cursos con control de stock. |
+| `/reservations` | GET | Reservas registradas. |
+| `/tasks` | GET / POST / PATCH / DELETE | Inventario de tareas. |
+
+### 4. Levantar Vite (terminal 2)
+
 ```bash
 npm run dev
 ```
-La aplicación estará disponible en: `http://localhost:5173` (o el siguiente puerto libre).
+
+La aplicación quedará disponible en <http://localhost:5173>.
 
 ---
 
-## 🗄️ Estructura del proyecto
+## Estructura de carpetas
 
 ```
 biblioteca-lab/
-├── db.json                    # Base de datos simulada (JSON Server)
+├── public/                 # Archivos estáticos (favicon, icons.svg)
 ├── src/
-│   ├── context/
-│   │   └── AuthContext.jsx    # Contexto global de autenticación
-│   ├── components/
-│   │   ├── Login.jsx          # Formulario de inicio de sesión
-│   │   ├── Navbar.jsx         # Barra de navegación con menú por rol
-│   │   └── RutaProtegida.jsx  # Guardia de rutas (auth + roles)
-│   ├── pages/
-│   │   ├── Dashboard.jsx      # Página de inicio / bienvenida
-│   │   ├── CoursesInventory.jsx # Catálogo de cursos (CRUD admin)
-│   │   ├── Reservations.jsx   # Módulo interactivo de reservas
-│   │   ├── Tasks.jsx          # Página de tareas
-│   │   └── AccesoDenegado.jsx # Pantalla de error 403
-│   ├── App.jsx                # Configuración de rutas con RutaProtegida
-│   └── main.jsx               # Punto de entrada
+│   ├── assets/             # Imágenes y recursos
+│   ├── components/         # Componentes reutilizables (TaskCard.jsx)
+│   ├── config/             # Configuración (api.js)
+│   ├── context/            # AuthContext.jsx (autenticación simulada)
+│   ├── hooks/              # Hooks personalizados
+│   ├── layout/             # RootLayout.jsx (navegación + header)
+│   ├── lib/                # Utilidades (api.js)
+│   ├── pages/              # Vistas por ruta (Dashboard, Tasks, ...)
+│   ├── router/             # Router.jsx (rutas protegidas)
+│   ├── styles/             # Estilos globales (index.css)
+│   ├── App.jsx             # Punto de entrada del router
+│   └── main.jsx            # Render principal + providers
+├── db.json                 # Base de datos mock de JSON Server
+├── README.md
+├── BITACORA.md
+├── vite.config.js
+└── package.json
 ```
 
 ---
 
-## 👤 Usuarios de prueba
+## Rutas de la aplicación
 
-Definidos en `db.json`. Credenciales para usar en `/login`:
-
-| Nombre | Email | Contraseña | Rol |
-|---|---|---|---|
-| Profesor Admin | `admin@lab.com` | `123` | `admin` |
-| Juan Estudiante | `estudiante@lab.com` | `123` | `estudiante` |
-
----
-
-## 🔐 Sistema de autenticación
-
-### AuthContext (`src/context/AuthContext.jsx`)
-
-- Expone `{ user, isAuthenticated, login, logout }` a toda la app mediante Context API.
-- El estado `user` contiene `{ id, name, email, role }` si hay sesión activa, o `null` si no.
-- **Persistencia:** el usuario se guarda en `localStorage` para sobrevivir recargas de página. La inicialización es **síncrona** (lazy initializer), por lo que no existe ventana de `null` temporal.
-- **Sincronización entre pestañas:** escucha el evento `storage` para cerrar sesión en tiempo real si el usuario cierra sesión en otra pestaña del navegador.
-
-```jsx
-// Consumo del contexto en cualquier componente
-import { useAuth } from '../context/AuthContext';
-
-const { user, login, logout } = useAuth();
-```
+| Ruta | Página | Requiere auth | Requiere admin |
+| --- | --- | --- | --- |
+| `/login` | Inicio de sesión | No | No |
+| `/` (Dashboard) | `/dashboard` | Sí | No |
+| `/tasks` | Tareas | Sí | Formulario de creación y botón de eliminación solo para admin. |
+| `/courses` | Cursos | Sí | Formulario de creación solo para admin. |
+| `/reservations` | Reservas | Sí | No |
 
 ---
 
-## 🛡️ RutaProtegida (`src/components/RutaProtegida.jsx`)
+## Credenciales de prueba
 
-Componente guardia de ruta que trabaja con **react-router-dom v6**.
+> Las credenciales están **hardcodeadas** en `db.json` únicamente para
+> desarrollo y pruebas locales.
 
-### Flujo de decisión
-
-```
-user === null               →  <Navigate to="/login" replace />
-rolPermitido !== user.role  →  <AccesoDenegado />
-✅ OK                       →  children || <Outlet />
-```
-
-### Props
-
-| Prop | Tipo | Descripción |
-|---|---|---|
-| `rolPermitido` | `string` (opcional) | Si se pasa, solo usuarios con ese rol pueden acceder |
-| `children` | `ReactNode` (opcional) | Contenido a renderizar si el usuario tiene acceso |
-
-### Uso
-
-```jsx
-// Ruta que requiere sesión (cualquier rol)
-<Route path="/courses" element={
-  <RutaProtegida>
-    <CoursesInventory />
-  </RutaProtegida>
-} />
-
-// Ruta exclusiva para administradores
-<Route path="/admin-panel" element={
-  <RutaProtegida rolPermitido="admin">
-    <AdminPanel />
-  </RutaProtegida>
-} />
-
-// Como Layout Route con Outlet (agrupa varias rutas hijas)
-<Route element={<RutaProtegida />}>
-  <Route path="/courses" element={<CoursesInventory />} />
-  <Route path="/reservations" element={<Reservations />} />
-</Route>
-```
-
-### ¿Por qué `replace` en `<Navigate>`?
-
-El prop `replace` evita que la URL protegida quede en el historial del navegador:
-
-- **Sin `replace`:** historial = `['/courses', '/login']` → el botón "Atrás" regresa a `/courses` generando un bucle.
-- **Con `replace`:** historial = `['/login']` → el botón "Atrás" va a la página anterior real.
-
-### ¿Qué pasa al recargar la página?
-
-El `AuthContext` usa un *lazy initializer* **síncrono** en `useState`:
-
-```js
-const [user, setUser] = useState(() => {
-  const stored = localStorage.getItem('user');
-  return stored ? JSON.parse(stored) : null;
-});
-```
-
-Gracias a esto, en el **primer render** ya tiene el valor correcto. No existe una ventana de tiempo donde `user === null` mientras "se lee" el storage, por lo que no es necesario un estado `isLoading` adicional. Si en el futuro el contexto se volviera asíncrono (ej. verificación con backend real), habría que agregar `if (isAuthLoading) return <Spinner />`.
+| Email | Password | Role | Nombre |
+| --- | --- | --- | --- |
+| `admin@demo.com` | `1234` | `admin` | Ana Admin |
+| `user@demo.com` | `1234` | `user` | Luis User |
+| `carlos@demo.com` | `1234` | `user` | Carlos Pérez |
 
 ---
 
-## ❌ AccesoDenegado (`src/pages/AccesoDenegado.jsx`)
+## Comandos útiles
 
-Pantalla de error **403** mostrada automáticamente por `<RutaProtegida>` cuando el usuario autenticado no tiene el rol requerido.
-
-- Ícono 🚫 prominente
-- Código de error **403** en tipografía grande
-- Mensaje explicativo sin tecnicismos
-- Botón **"🏠 Volver al Inicio"** con efecto hover animado
-- También accesible directamente en la ruta `/403`
-
----
-
-## 📅 Reservations (`src/pages/Reservations.jsx`)
-
-Módulo interactivo completo de reservas de laboratorio.
-
-### Comportamiento por rol
-
-| Rol | Qué ve | Puede hacer |
-|---|---|---|
-| `admin` | **Todas** las reservas del sistema | Crear y **Eliminar** cualquier reserva |
-| `estudiante` | **Solo sus** reservas | Crear y **Cancelar** sus propias reservas |
-
-### Operaciones HTTP
-
-```
-GET    /reservations              → Admin: todas las reservas
-GET    /reservations?userId=X     → Usuario: solo sus reservas (filtrado en servidor)
-POST   /reservations              → Crear nueva reserva
-DELETE /reservations/:id          → Cancelar/Eliminar una reserva
-```
-
-### ¿Filtrado en servidor vs `.filter()` en frontend?
-
-Se usa la query string `?userId=${user.id}` para que **JSON Server filtre en el origen**. Esto es preferible a traer todos los datos y filtrarlos con `.filter()` en el cliente porque:
-1. Menos datos en la red (más eficiente y escalable).
-2. El servidor es la fuente de verdad.
-3. En una API real, el filtro ocurre a nivel de base de datos (con índice).
-
-El `.filter()` en frontend solo tiene sentido cuando ya tienes los datos en memoria y quieres hacer una búsqueda o filtrado visual sin peticiones extra al servidor.
-
-### Actualización de estado local optimista
-
-Tras cada mutación exitosa, el estado local se actualiza **sin hacer un segundo GET**:
-
-```js
-// Después de POST exitoso
-setReservations(prev => [...prev, reservaCreada]);
-
-// Después de DELETE exitoso
-setReservations(prev => prev.filter(r => r.id !== idEliminado));
-```
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Levanta el servidor de Vite. |
+| `npm run build` | Genera la versión de producción. |
+| `npm run preview` | Sirve localmente la build de producción. |
+| `npm run lint` | Ejecuta Oxlint. |
 
 ---
 
-## 🗺️ Mapa de rutas (`src/App.jsx`)
+## Reflexión de seguridad: ¿por qué este sistema de roles NO es seguro en producción?
 
-| Ruta | Acceso | Componente |
-|---|---|---|
-| `/` | Pública | `Dashboard` |
-| `/login` | Pública | `Login` |
-| `/403` | Pública | `AccesoDenegado` |
-| `/courses` | Autenticado (cualquier rol) | `CoursesInventory` |
-| `/reservations` | Autenticado (cualquier rol) | `Reservations` |
-| `/tasks` | Autenticado (cualquier rol) | `Tasks` |
-| `/admin-panel` | Solo rol `admin` | *(placeholder: Dashboard)* |
-| `*` | — | Redirige a `/` |
+Este prototipo valida el rol del usuario consumiendo directamente el endpoint
+`/users` de JSON Server desde el cliente y confiando en el campo `role` que
+viene guardado en `localStorage`. Ese enfoque **no es seguro** para producción
+por varias razones:
+
+1. **`localStorage` es volátil y manipulable.** Cualquier usuario puede abrir
+   las herramientas de desarrollo y cambiar el valor de `libraryUser`, por
+   ejemplo modificando `role` de `"user"` a `"admin"`. El cliente no debe ser
+   la fuente de verdad de los permisos.
+2. **Las contraseñas viajan y se comparan en texto plano.** JSON Server
+   compara strings sin hashing. Un backend real debe almacenar contraseñas con
+   un algoritmo de *hashing* fuerte (bcrypt, Argon2) y nunca enviar la password
+   al cliente.
+3. **No hay validación ni autorización del lado del servidor.** El cliente
+   decide qué endpoint llamar y con qué datos. El servidor debe validar en cada
+   request quién es el usuario autenticado (middleware/JWT) y si está autorizado
+   a realizar la operación (p. ej. solo un `admin` puede `DELETE /tasks/:id`).
+4. **No hay sesión ni token firmado.** No se invalida sesiones al cerrar, no
+   hay expiración ni revocación.
+
+### ¿Qué haría falta en un backend real?
+
+- **JWT (JSON Web Tokens)** firmados con una clave secreta: el servidor
+  autentica al iniciar sesión, devuelve un token con el `id` y `role`, y el
+  cliente lo envía en cada request (`Authorization: Bearer <token>`).
+- **Hashing de contraseñas** con `bcrypt`/`Argon2` y comparación segura.
+- **Validación y sanitización en el servidor** de todo lo recibido en los
+  *bodies* de las peticiones.
+- **Autorización basada en roles (RBAC)** en el backend: un *middleware* que
+  verifique `req.user.role` antes de permitir `POST`/`DELETE`.
+- **HTTP-only cookies** con `SameSite` para almacenar el token y evitar
+  vulnerabilidades XSS/CSRF.
+- **Rate limiting** y bloqueo de intentos fallidos para mitigar fuerza bruta.
 
 ---
 
-## 🌐 Endpoints del backend simulado
+## Bitácora de desarrollo
 
-JSON Server expone los siguientes endpoints en `http://localhost:3001`:
-
-| Endpoint | Descripción |
-|---|---|
-| `GET /users` | Lista de usuarios (para login) |
-| `GET /courses` | Catálogo de cursos |
-| `POST /courses` | Crear curso (admin) |
-| `DELETE /courses/:id` | Eliminar curso (admin) |
-| `GET /reservations` | Todas las reservas (admin) |
-| `GET /reservations?userId=X` | Reservas de un usuario |
-| `POST /reservations` | Crear nueva reserva |
-| `DELETE /reservations/:id` | Cancelar reserva |
-
----
-
-## 🌿 Flujo de trabajo con Git
-
-Este desarrollo se realizó en la rama `feature-oscar`.
-
-```bash
-# Ver en qué rama estás
-git branch
-
-# Asegurarte de estar en feature-oscar
-git checkout feature-oscar
-
-# Commitear cambios
-git add .
-git commit -m "feat: descripción del cambio"
-
-# Subir a GitHub
-git push origin feature-oscar
-```
-
-### Historial de commits relevantes
-
-| Hash | Descripción |
-|---|---|
-| `cc95537` | feat: implementacion inicial del sistema de biblioteca y laboratorio |
-| `285fda0` | feat: agregar rutas protegidas y módulo de reservas |
+Este proyecto se documenta iteración a iteración en
+[`BITACORA.md`](./BITACORA.md) (metodología **Vibe Coding**).
