@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, LogIn, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
@@ -125,6 +125,13 @@ const Login = () => {
             )}
           </button>
         </form>
+
+        <div className="login-footer">
+          <span>¿No tienes cuenta?</span>
+          <Link to="/register" className="login-link">
+            Regístrate aquí
+          </Link>
+        </div>
       </div>
     </div>
   );

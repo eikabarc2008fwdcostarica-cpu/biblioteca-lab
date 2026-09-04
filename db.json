@@ -35,6 +35,50 @@
       "materialsAvailable": 3
     }
   ],
-  "reservations": [],
-  "tasks": []
+  "reservations": [
+    {
+      "id": "1",
+      "courseId": "1",
+      "courseTitle": "Arquitectura de Computadores",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-03T14:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "courseId": "3",
+      "courseTitle": "Redes y Comunicaciones",
+      "userId": "2",
+      "userName": "Juan Estudiante",
+      "status": "Confirmada",
+      "createdAt": "2026-09-04T09:15:00.000Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Calibración de osciloscopios de mesa 3 y 4",
+      "assignedTo": "Juan Estudiante",
+      "completed": false
+    },
+    {
+      "id": "2",
+      "title": "Inventario de kits Arduino y sensores ultrasónicos",
+      "assignedTo": "Profesor Admin",
+      "completed": true
+    },
+    {
+      "id": "3",
+      "title": "Actualización de guías de laboratorio de Arquitectura",
+      "assignedTo": "Juan Estudiante",
+      "completed": true
+    },
+    {
+      "id": "4",
+      "title": "Reemplazo de cables de red categoría 6 dañados",
+      "assignedTo": "Profesor Admin",
+      "completed": false
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, LogOut, LogIn, Menu, X, Shield, User } from 'lucide-react';
+import { BookOpen, LogOut, LogIn, Menu, X, Shield, User, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
@@ -29,7 +29,7 @@ const Navbar = () => {
   const getBadgeRoleClass = (role) => {
     const normalizedRole = role?.toLowerCase();
     if (normalizedRole === 'admin') return 'role-admin';
-    if (normalizedRole === 'estudiante') return 'role-estudiante';
+    if (normalizedRole === 'estudiante' || normalizedRole === 'user') return 'role-estudiante';
     return 'role-default';
   };
 
@@ -57,7 +57,7 @@ const Navbar = () => {
 
         {/* Menú principal de enlaces y sesión */}
         <div className={`navbar-menu ${isMenuOpen ? 'is-open' : ''}`}>
-          {/* Rutas requeridas */}
+          {/* Rutas principales del sistema */}
           <ul className="navbar-links">
             <li>
               <Link to="/" onClick={handleCloseMenu}>
@@ -81,7 +81,7 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* Renderizado condicional basado en 'user' */}
+          {/* Sección de autenticación con renderizado condicional según 'user' */}
           <div className="navbar-auth">
             {user ? (
               // 1. Vista cuando el usuario SÍ ha iniciado sesión
@@ -110,15 +110,25 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              // 2. Vista cuando NO hay sesión activa
-              <Link
-                to="/login"
-                onClick={handleCloseMenu}
-                className="login-nav-btn"
-              >
-                <LogIn size={16} />
-                <span>Iniciar sesión</span>
-              </Link>
+              // 2. Vista cuando NO hay sesión activa (Iniciar sesión y Registro)
+              <div className="guest-nav-actions">
+                <Link
+                  to="/login"
+                  onClick={handleCloseMenu}
+                  className="nav-secondary-btn"
+                >
+                  <LogIn size={15} />
+                  <span>Iniciar sesión</span>
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={handleCloseMenu}
+                  className="login-nav-btn"
+                >
+                  <UserPlus size={15} />
+                  <span>Registrarse</span>
+                </Link>
+              </div>
             )}
           </div>
         </div>

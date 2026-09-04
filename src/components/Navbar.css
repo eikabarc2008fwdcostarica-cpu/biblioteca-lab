@@ -153,6 +153,33 @@
   box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
 }
 
+.guest-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #475569;
+  background-color: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-secondary-btn:hover {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
+}
+
 /* Botón Iniciar Sesión */
 .login-nav-btn {
   display: inline-flex;
@@ -240,8 +267,15 @@
   }
 
   .logout-btn,
-  .login-nav-btn {
+  .login-nav-btn,
+  .nav-secondary-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .guest-nav-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
   }
 }

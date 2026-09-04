@@ -45,18 +45,39 @@ export const AuthProvider = ({ children }) => {
    */
   const login = async (email, password) => {
     try {
-      // Petición a JSON Server con parámetros codificados
+      const normalizedEmail = email.trim().toLowerCase();
+      const rawPassword = String(password).trim();
+
+      // Petición inicial a JSON Server con parámetros codificados
       const response = await fetch(
-        `http://localhost:3001/users?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        `http://localhost:3001/users?email=${encodeURIComponent(normalizedEmail)}&password=${encodeURIComponent(rawPassword)}`
       );
 
       if (!response.ok) {
         throw new Error(`Error del servidor (${response.status}): no se pudo verificar las credenciales.`);
       }
 
-      const users = await response.json();
+      let users = await response.json();
 
-      // Si el array devuelto contiene al menos un usuario coincidente
+      // Compatibilidad con JSON Server: JSON Server suele parsear query params puramente numéricos (ej. 123)
+      // como tipo Number, provocando que no coincida con el valor String "123" almacenado en db.json.
+      // Como fallback de seguridad, si no hubo coincidencia directa, consultamos por email y validamos la contraseña:
+      if (!Array.isArray(users) || users.length === 0) {
+        const emailResponse = await fetch(
+          `http://localhost:3001/users?email=${encodeURIComponent(normalizedEmail)}`
+        );
+        if (emailResponse.ok) {
+          const matchedUsers = await emailResponse.json();
+          if (Array.isArray(matchedUsers) && matchedUsers.length > 0) {
+            const candidate = matchedUsers[0];
+            if (String(candidate.password) === rawPassword) {
+              users = [candidate];
+            }
+          }
+        }
+      }
+
+      // Si se encuentra un usuario coincidente
       if (Array.isArray(users) && users.length > 0) {
         const foundUser = users[0];
 
@@ -75,7 +96,7 @@ export const AuthProvider = ({ children }) => {
         return userData;
       }
 
-      // Si el array devuelto está vacío, las credenciales son incorrectas
+      // Si no coincide, lanzamos error descriptivo
       throw new Error('Credenciales incorrectas. Verifica el correo y la contraseña.');
     } catch (error) {
       // Manejo específico si JSON Server no está activo o inalcanzable
